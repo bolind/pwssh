@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# pwssh: a wrapper script that does it darndest to just get to a simple password
+# prompt when ssh'ing into things.
+#
+# Usage: as you would normally use ssh, e.g. pwssh root@server.example.com
+#
+# Options, explained:
+#
+# PreferredAuthentications=password
+# Prefer password over other methods.
+#
+# PubkeyAuthentication=no
+# Disable public key authentication.
+#
+# GSSAPIAuthentication=no
+# Disable GSSAPI authentication (as used in FreeIPA.)
+#
+# IdentitiesOnly=yes
+# Counterintuitive, but this reduces the amount of identities (keypairs) considered,
+# which is beneficial as the default amount in sshd is 6, a number you can easily
+# exceed if you have just a few ssh keypairs set up.
+#
+# StrictHostKeyChecking=no
+# Since you're likely ssh'ing to a freshly installed entity, you're OK with not
+# knowing the host key.
+#
+# UserKnownHostsFile=/dev/null
+# GlobalKnownHostsFile=/dev/null
+# Disable known_hosts files but system-wide and per-user.
+
+ssh -o PreferredAuthentications=password \
+    -o PubkeyAuthentication=no \
+    -o GSSAPIAuthentication=no \
+    -o IdentitiesOnly=yes \
+    -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    -o GlobalKnownHostsFile=/dev/null \
+    "$@"
